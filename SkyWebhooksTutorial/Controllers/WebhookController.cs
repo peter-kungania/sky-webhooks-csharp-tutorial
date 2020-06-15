@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CloudNative.CloudEvents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SkyWebhooksTutorial.AppSettings;
 using SkyWebhooksTutorial.BusinessLogic;
-using SkyWebhooksTutorial.Models;
 using SkyWebhooksTutorial.Models.EventTypes;
 
 namespace SkyWebhooksDemo.Controllers
@@ -74,7 +74,7 @@ namespace SkyWebhooksDemo.Controllers
         [Route("eventhandler")]
         [HttpPost]
         public async Task<IActionResult> WebhookEventHandler(
-          [FromBody] CloudEventsV10Event cloudEvent,
+          [FromBody] CloudEvent cloudEvent,
           [FromQuery] string webhookKey)
         {
             _logger.LogInformation("Received POST request to webhook event handler.");

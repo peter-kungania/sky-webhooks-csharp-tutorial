@@ -20,8 +20,7 @@ namespace SkyWebhooksTutorial
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Webhook service configuration.
-            // These 6 lines are the only deviation from the standard .NET Core template Startup.cs
+            // Webhook service configuration
             services.Configure<WebhookConfig>(Configuration.GetSection("WebhookConfig"));
             services.AddSingleton<BusinessLogic.IWebhookService>((serviceProvider) =>
             {
@@ -29,7 +28,11 @@ namespace SkyWebhooksTutorial
                 return new BusinessLogic.WebhookService(logger);
             });
 
-            services.AddControllers();
+            // Configuring CloudEvent input formatter
+            services.AddControllers(opts =>
+            {
+                opts.InputFormatters.Insert(0, new CloudNative.CloudEvents.CloudEventJsonInputFormatter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

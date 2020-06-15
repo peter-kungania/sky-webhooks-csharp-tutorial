@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CloudNative.CloudEvents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SkyWebhooksTutorial.BusinessLogic;
@@ -13,7 +14,7 @@ namespace SkyWebhooksTutorial.Models.EventTypes.EmailAddress
     {
         public const string EVENTTYPE = "com.blackbaud.constituent.emailaddress.change.v1";
 
-        public EmailAddressChangedV1Event(CloudEventsV10Event cloudEvent, ILogger logger) : base(cloudEvent, logger)
+        public EmailAddressChangedV1Event(CloudEvent cloudEvent, ILogger logger) : base(cloudEvent, logger)
         {
         }
 

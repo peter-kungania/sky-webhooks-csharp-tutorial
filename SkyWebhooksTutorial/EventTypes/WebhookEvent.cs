@@ -1,22 +1,23 @@
 ﻿using System.Threading.Tasks;
+using CloudNative.CloudEvents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SkyWebhooksTutorial.BusinessLogic;
 
 namespace SkyWebhooksTutorial.Models.EventTypes
 {
-    public abstract class WebhookEvent : CloudEventsV10Event
+    public abstract class WebhookEvent : CloudEvent
     {
         protected ILogger Logger { get; set; }
 
-        public WebhookEvent(CloudEventsV10Event cloudEvent, ILogger logger)
+        public WebhookEvent(CloudEvent cloudEvent, ILogger logger) : base(
+            CloudNative.CloudEvents.CloudEventsSpecVersion.V1_0, 
+            cloudEvent.Type,
+            cloudEvent.Source,
+            cloudEvent.Id,
+            cloudEvent.Time)
         {
-            this.Id = cloudEvent.Id;
-            this.SpecVersion = cloudEvent.SpecVersion;
-            this.Type = cloudEvent.Type;
             this.Subject = cloudEvent.Subject;
-            this.Source = cloudEvent.Source;
-            this.Time = cloudEvent.Time;
             this.Logger = logger;
             this.Data = BuildEventDataObject(cloudEvent.Data);
         }
@@ -29,7 +30,7 @@ namespace SkyWebhooksTutorial.Models.EventTypes
 
         protected abstract object BuildEventDataObject(object rawEventData);
 
-        public static bool CreateWebhookEvent(CloudEventsV10Event cloudEvent, out WebhookEvent blackbaudEvent, ILogger logger)
+        public static bool CreateWebhookEvent(CloudEvent cloudEvent, out WebhookEvent blackbaudEvent, ILogger logger)
         {
             var validEvent = true;
 
