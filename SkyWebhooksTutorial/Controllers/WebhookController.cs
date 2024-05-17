@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CloudNative.CloudEvents;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -50,9 +51,9 @@ namespace SkyWebhooksDemo.Controllers
             if (this.Request.Headers.TryGetValue("WebHook-Request-Origin", out Microsoft.Extensions.Primitives.StringValues requestOriginValue) &&
                 requestOriginValue.Equals(this.AllowedOrgin))
             {
-                this.Response.Headers.Add("WebHook-Allowed-Origin", this.AllowedOrgin);
-                this.Response.Headers.Add("WebHook-Allowed-Rate", "100");
-                this.Response.Headers.Add("Allow", "POST");
+                this.Response.Headers.Append("WebHook-Allowed-Origin", this.AllowedOrgin);
+                this.Response.Headers.Append("WebHook-Allowed-Rate", "100");
+                this.Response.Headers.Append("Allow", "POST");
 
                 if (!string.Equals(_webhookConfig.Key, webhookKey))
                 {
