@@ -26,3 +26,4 @@ bld/
 # Visual Studio cache/options directory
 .vs/
 .vscode/
+SkyWebhooksTutorial/appsettings.json
